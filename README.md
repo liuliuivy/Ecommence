@@ -1,4 +1,4 @@
-# MERN Shopping List
+# MERN Amazon product lookup
 
 > Amazon product item lookup app built with the MERN stack (along with Redux for state management), Reactstrap and react-transition-group.
 
