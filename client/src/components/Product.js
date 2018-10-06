@@ -7,16 +7,20 @@ import {
     Input,
     ListGroup,
     ListGroupItem,
-    Button
+    Button,
+    Alert
 } from 'reactstrap';
 
 
 class Product extends Component {
-
-    state = {
-        item: null,
-        asin: ''
-    };
+    constructor() {
+        super();
+        this.state = {
+            item: null,
+            asin: '0123456789',
+            isError: false
+        };
+    }
     change = e => {
         this.setState({
             ...this.state,
@@ -24,41 +28,55 @@ class Product extends Component {
         })
         //const itemToShow = this.state.items.find(item =>item.asin === e.target.value)
     }
-    click=() =>{
-        axios.post('/api/items', {asin:this.state.asin})
-            .then(res =>{
-            console.log(res.data);
-            this.setState({
-                ...this.state,
-                item:res.data
-            })
+    click = () => {
+        axios.post('/api/items', { asin: this.state.asin })
+            .then(res => {
+                this.setState({
+                    ...this.state,
+                    isError: false,
+                    item: res.data
+                })
+            }).catch(() => {
+                this.setState({
+                    ...this.state,
+                    isError: true,
+                    item: null
+                });
             })
     }
-    
+
 
 
     render() {
         const { item } = this.state;
         return (
-           
+
             <div>
                 <Form>
                     <FormGroup>
-                        <Label style={{ fontWeight: "bold" }}>Product ASIN </Label>
+                        <Label style={{ fontWeight: "bold" }}>
+                            Product ASIN (e.g. 0123456789)
+                        </Label>
                         <Input
                             name="asin"
-                            onChange={this.change} />
-                        <Button 
-                         color="primary"
-                         size="sm"
-                         onClick={this.click} />
+                            onChange={this.change}
+                            value={this.state.asin}
+                        />
+                        <Button
+                            color="primary"
+                            size="sm"
+                            onClick={this.click}
+                        />
                     </FormGroup>
                 </Form>
-                {item !== undefined && item !==null && <ListGroup>
-                    <h3>Product Details:</h3>
-                    <ListGroupItem>The rank is :{item.rank}</ListGroupItem>
-                    <ListGroupItem>The price is {item.price} </ListGroupItem>
-                </ListGroup>}
+                {this.state.isError
+                    ? <Alert color={"danger"}>Error! Please try again</Alert>
+                    : item !== undefined && item !== null && <ListGroup>
+                        <Label>Product Details:</Label>
+                        <ListGroupItem>The rank is {item.rank}</ListGroupItem>
+                        <ListGroupItem>The price is {item.price}</ListGroupItem>
+                    </ListGroup>
+                }
 
             </div>
         )
