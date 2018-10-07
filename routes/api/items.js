@@ -8,10 +8,13 @@ const Item = require('../../models/Item');
 router.post('/', (req, res) => {
   axios.post('https://amazon-product-lookup.herokuapp.com/', req.body)
     .then(resAmz => {
+      const { rank, category, dimensions } = resAmz.data;
+      const { asin } = req.body;
       const newItem = new Item({
-        asin: resAmz.data.asin,
-        price: resAmz.data.price,
-        rank: resAmz.data.rank
+        asin,
+        rank,
+        category,
+        dimensions
       });
       return newItem.save();
     })

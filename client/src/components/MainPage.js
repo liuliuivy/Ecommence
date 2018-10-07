@@ -8,16 +8,18 @@ import {
     ListGroup,
     ListGroupItem,
     Button,
-    Alert
+    Alert,
+    Badge
 } from 'reactstrap';
 
+const defaultAsin = "B002QYW8LW";
 
-class Product extends Component {
+class MainPage extends Component {
     constructor() {
         super();
         this.state = {
             item: null,
-            asin: '0123456789',
+            asin: defaultAsin,
             isError: false
         };
     }
@@ -25,8 +27,7 @@ class Product extends Component {
         this.setState({
             ...this.state,
             [e.target.name]: e.target.value
-        })
-        //const itemToShow = this.state.items.find(item =>item.asin === e.target.value)
+        });
     }
     click = () => {
         axios.post('/api/items', { asin: this.state.asin })
@@ -45,43 +46,45 @@ class Product extends Component {
             })
     }
 
-
-
     render() {
         const { item } = this.state;
-        return (
 
+        return (
             <div>
                 <Form>
                     <FormGroup>
                         <Label style={{ fontWeight: "bold" }}>
-                            Product ASIN (e.g. 0123456789)
+                            {`Product ASIN (e.g. ${defaultAsin}, B01N1OSCOU)`}
                         </Label>
                         <Input
                             name="asin"
                             onChange={this.change}
                             value={this.state.asin}
                         />
-                        <Button
+                        <Button style={{ marginTop: "10px" }}
+                            outline
                             color="primary"
                             size="sm"
                             onClick={this.click}
-                        />
+                        >
+                            Search
+                        </Button>
                     </FormGroup>
                 </Form>
                 {this.state.isError
-                    ? <Alert color={"danger"}>Error! Please try again</Alert>
-                    : item !== undefined && item !== null && <ListGroup>
-                        <Label>Product Details:</Label>
-                        <ListGroupItem>The rank is {item.rank}</ListGroupItem>
-                        <ListGroupItem>The price is {item.price}</ListGroupItem>
-                    </ListGroup>
+                    ? <Alert color={"danger"}>Sorry! No product found for ASIN input</Alert>
+                    : item !== undefined
+                        && item !== null
+                        && <ListGroup>
+                            <Label>Product Details:</Label>
+                            <ListGroupItem>The rank is <Badge color="success" pill>{item.rank}</Badge></ListGroupItem>
+                            <ListGroupItem>The category is <Badge color="success" pill>{item.category}</Badge></ListGroupItem>
+                            <ListGroupItem>The dimensions is <Badge color="success" pill>{item.dimensions}</Badge></ListGroupItem>
+                        </ListGroup>
                 }
-
             </div>
         )
     }
-
 }
 
-export default Product;
+export default MainPage;

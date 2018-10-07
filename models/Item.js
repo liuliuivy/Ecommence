@@ -7,15 +7,14 @@ const ItemSchema = new Schema({
     type: String,
     required: true
   },
-  price: {
-    type: Number,
+  rank: {
+    type: Number
   },
-  rank:{
-    type: Number,
+  category: {
+    type: String
   },
-  date: {
-    type: Date,
-    default: Date.now
+  dimensions: {
+    type: String
   }
 });
 
