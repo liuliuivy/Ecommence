@@ -31,8 +31,8 @@ There is a Heroku post build script so that you do not have to compile your Reac
 
 ### Author
 
-X
-[X](http://www.lhh.zone)
+Ivy
+[Ivy](http://www.lhh.zone)
 
 ### Version
 

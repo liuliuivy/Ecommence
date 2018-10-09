@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ItemSchema = new Schema({
-  asin:{
+  asin: {
     type: String,
     required: true
   },

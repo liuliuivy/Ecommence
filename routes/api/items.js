@@ -6,7 +6,7 @@ const router = express.Router();
 const Item = require('../../models/Item');
 
 router.post('/', (req, res) => {
-  axios.post('https://amazon-product-lookup.herokuapp.com/', req.body)
+  axios.post('https://amazon-product-page-fetch.herokuapp.com/', req.body)
     .then(resAmz => {
       const { rank, category, dimensions } = resAmz.data;
       const { asin } = req.body;
