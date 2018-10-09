@@ -32,6 +32,7 @@ class MainPage extends Component {
     click = () => {
         axios.post('/api/items', { asin: this.state.asin })
             .then(res => {
+                console.log(res.data)
                 if (res.data.rank === 0
                     && res.data.dimensions === ''
                     && res.data.category === ''
