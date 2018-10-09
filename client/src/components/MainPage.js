@@ -32,11 +32,22 @@ class MainPage extends Component {
     click = () => {
         axios.post('/api/items', { asin: this.state.asin })
             .then(res => {
-                this.setState({
-                    ...this.state,
-                    isError: false,
-                    item: res.data
-                })
+                if (res.data.rank === 0
+                    && res.data.dimensions === ''
+                    && res.data.category === ''
+                ) {
+                    this.setState({
+                        ...this.state,
+                        isError: true,
+                        item: null
+                    });
+                } else {
+                    this.setState({
+                        ...this.state,
+                        isError: false,
+                        item: res.data
+                    })
+                }
             }).catch(() => {
                 this.setState({
                     ...this.state,
@@ -74,13 +85,13 @@ class MainPage extends Component {
                 {this.state.isError
                     ? <Alert color={"danger"}>Sorry! No product found for ASIN input</Alert>
                     : item !== undefined
-                        && item !== null
-                        && <ListGroup>
-                            <Label>Product Details:</Label>
-                            <ListGroupItem>The rank is <Badge color="success" pill>{item.rank}</Badge></ListGroupItem>
-                            <ListGroupItem>The category is <Badge color="success" pill>{item.category}</Badge></ListGroupItem>
-                            <ListGroupItem>The dimensions is <Badge color="success" pill>{item.dimensions}</Badge></ListGroupItem>
-                        </ListGroup>
+                    && item !== null
+                    && <ListGroup>
+                        <Label>Product Details:</Label>
+                        <ListGroupItem>The rank is <Badge color="success" pill>{item.rank}</Badge></ListGroupItem>
+                        <ListGroupItem>The category is <Badge color="success" pill>{item.category}</Badge></ListGroupItem>
+                        <ListGroupItem>The dimensions is <Badge color="success" pill>{item.dimensions}</Badge></ListGroupItem>
+                    </ListGroup>
                 }
             </div>
         )
