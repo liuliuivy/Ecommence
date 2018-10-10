@@ -29,25 +29,15 @@ class MainPage extends Component {
             [e.target.name]: e.target.value
         });
     }
-    click = () => {
+    click = (e) => {
+        e.preventDefault();
         axios.post('/api/items', { asin: this.state.asin })
             .then(res => {
-                if (res.data.rank === 0
-                    && res.data.dimensions === ''
-                    && res.data.category === ''
-                ) {
-                    this.setState({
-                        ...this.state,
-                        isError: true,
-                        item: null
-                    });
-                } else {
-                    this.setState({
-                        ...this.state,
-                        isError: false,
-                        item: res.data
-                    })
-                }
+                this.setState({
+                    ...this.state,
+                    isError: false,
+                    item: res.data
+                })
             }).catch(() => {
                 this.setState({
                     ...this.state,
